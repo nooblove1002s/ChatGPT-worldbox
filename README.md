@@ -1,28 +1,38 @@
-# ChatGPT-WorldBox — Foundation Prototype
+# ChatGPT-WorldBox
 
-This is the first playable foundation for ChatGPT-WorldBox, developed separately from the HYPERBLOCK portal on the `feature/chatgpt-worldbox-foundation` branch.
+A mobile-friendly, 2D pixel-art god simulator and evolving world sandbox. This project is maintained on the repository's `main` branch and is separate from HYPERBLOCK.
 
-## Run it
-Open `chatgpt-worldbox/index.html` in a browser, or serve the repository with GitHub Pages/a static web server and visit `/chatgpt-worldbox/`. It is a self-contained HTML file and has no build step or external dependencies.
+## Run the game
 
-## Working in this first build
+Open `index.html` from a static web server or enable GitHub Pages for this repository. The game uses plain HTML, CSS, and JavaScript with no build step or external runtime dependencies.
+
+## Current working features
+
 - Procedurally generated tile maps in small, medium, and large sizes
-- Editable terrain: grass, water, sand, forest, mountains, and snow
-- Touch-friendly paint tools and adjustable brush size
-- Place citizens and settlements; erase life from tiles
-- Basic simulation clock, pause/play, single-step, and speed controls
-- Starter food, aging, mortality, settlement population, and birth behaviors
-- World overview, tile inspection, and a small chronological event log
-- Save/load using this browser's local storage
+- Editable grass, water, sand, forest, mountain, and snow terrain
+- Touch-friendly map painting, brush sizes, citizen placement, settlement placement, erase, and inspect tools
+- Simulation pause/play, single-step, and speed controls
+- Starter citizen needs, aging, mortality, food collection, and settlement births
+- Settlement-level food, wood, and stone gathering based on nearby terrain
+- Settlement knowledge accumulation and technology progression through ten eras: Nomadic, Agrarian, Bronze Age, Classical, Medieval, Renaissance, Industrial, Modern, Advanced, and Spacefaring
+- Settlement stability that responds to food pressure
+- Government types and occasional government reorganization
+- Kingdom formation for developed, sufficiently populated settlements
+- Live civilization overview, kingdom count, and advancement stats
+- Event history, save/load in the current browser's local storage, and legacy-save migration for the new civilization fields
+
+## Save behavior
+
+Saves currently live in this browser on this device. They are not cloud saves and will not automatically transfer between browsers or devices. The game adds missing civilization fields when loading older saves.
 
 ## Current limits
-This is a foundation prototype, not the complete master blueprint yet. Saves are local to the browser/device and are not cloud saves. Citizens and settlements use intentionally simple starter rules. It does not yet include full civilizations, families, kingdom diplomacy/conquest, advanced AI, historical Earth maps, or the full technology timeline. The game should be expanded in tested modules rather than presenting unfinished menu items as working systems.
 
-## Development order
-1. Make world generation, editing, time, and local saves reliable.
-2. Add citizen needs, families, jobs, education, and settlements.
-3. Add resources, trade, technology progression, and civilization formation.
-4. Add governments, diplomacy, gradual conquest, vassals/puppet states, and collapse.
-5. Add persistent history, scenario maps, advanced eras, disasters, and optimization.
+This is an actively growing prototype, not the complete long-term design. It does not yet include full diplomacy, gradual conquest, vassal/puppet states, detailed citizen families/jobs/education, historical Earth scenarios, deep military logistics, or advanced AI. Those should be implemented as tested systems rather than advertised as complete features.
 
-The main HYPERBLOCK branch has not been changed by this prototype.
+## Next development priorities
+
+1. Make citizen movement, family formation, jobs, and settlement population rules more robust.
+2. Add inter-settlement trade, resource shortages, and meaningful technology requirements.
+3. Build diplomacy, alliances, gradual conquest, occupation, vassals, and puppet states.
+4. Expand persistent world history and scenario/map tools.
+5. Add historical eras, disasters, crisis systems, and performance safeguards.
