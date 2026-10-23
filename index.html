@@ -47,13 +47,17 @@
     <div class="stat"><strong id="settlementCount">0</strong><span>Settlements</span></div>
     <div class="stat"><strong id="landCount">0%</strong><span>Land</span></div>
     <div class="stat"><strong id="dayCount">1</strong><span>Simulated days</span></div>
+    <div class="stat"><strong id="kingdomCount">0</strong><span>Kingdoms</span></div>
+    <div class="stat"><strong id="advancedCount">0</strong><span>Settlements past Bronze Age</span></div>
   </div>
+  <div class="section"><h2>Civilization progress</h2><div id="civilizationInfo" class="small">Found a settlement and introduce citizens to begin developing knowledge, resources, and government.</div></div>
   <div class="section"><h2>Selected tile</h2><div id="tileInfo" class="small">Tap a tile to inspect its terrain and life.</div></div></section>
   <section><h2>World history</h2><div id="history" class="event-log"><div class="event">Year 1: A new world begins. Shape the land and introduce life.</div></div><p class="notice">Major events are logged here. History and simulation systems will expand as development progresses.</p></section>
 </aside>
 </main>
 <div class="footer">ChatGPT-WorldBox · Foundation build · Original prototype art and code</div>
 </div>
+<script src="js/civilization-system.js"></script>
 <script>
 (function(){
 "use strict";
@@ -75,7 +79,8 @@ function newWorld(w=64,h=40){
  // Organic blobs for forests, highlands, and lakes.
  for(let i=0;i<Math.floor(w*h*.035);i++){let x=rand(w),y=rand(h),type=["forest","mountain","water","sand"][rand(4)],r=2+rand(4);
  for(let yy=Math.max(0,y-r);yy<Math.min(h,y+r);yy++)for(let xx=Math.max(0,x-r);xx<Math.min(w,x+r);xx++)if(Math.hypot(xx-x,yy-y)<r&&Math.random()>.28)tiles[yy][xx]=blankTile(type)}
- world={name:$("worldName").value.trim()||"Untitled World",w,h,tiles,citizens:[],settlements:[],nextId:1};
+ world={name:$("worldName").value.trim()||"Untitled World",w,h,tiles,citizens:[],settlements:[],kingdoms:[],nextId:1};
+ if(window.CivilizationSystem)CivilizationSystem.ensure(world);
  days=1;events=[];addEvent("Year 1: A new world begins. Shape the land and introduce life.");selected={x:Math.floor(w/2),y:Math.floor(h/2)};resizeCanvas();draw();updateUI();
 }
 function addEvent(text){events.unshift({day:days,text});events=events.slice(0,80);renderHistory()}
@@ -97,6 +102,7 @@ function draw(){
 function updateUI(){
  $("mapName").textContent=world.name;$("worldName").value=world.name;$("worldAge").textContent="Year "+(Math.floor((days-1)/365)+1)+" · Day "+(((days-1)%365)+1);$("status").textContent=running?"Simulating":"Paused";
  $("citizenCount").textContent=world.citizens.length;$("settlementCount").textContent=world.settlements.length;$("dayCount").textContent=days.toLocaleString();
+ if(window.CivilizationSystem){const cs=CivilizationSystem.summarize(world);$("kingdomCount").textContent=cs.kingdoms;$("advancedCount").textContent=cs.advanced;const leaders=world.settlements.slice().sort((a,b)=>(b.technology||0)-(a.technology||0)).slice(0,3);$("civilizationInfo").textContent=leaders.length?leaders.map(s=>s.name+": "+(s.era||"Nomadic")+" · "+s.government+" · knowledge "+Math.floor((s.resources&&s.resources.knowledge)||0)+" · stability "+Math.round(s.stability||0)+"%").join(" | "):"Found a settlement and introduce citizens to begin developing knowledge, resources, and government."; }
  let land=0;world.tiles.flat().forEach(t=>{if(t.terrain!=="water")land++});$("landCount").textContent=Math.round(land/(world.w*world.h)*100)+"%";
  const t=world.tiles[selected.y]?.[selected.x];if(t)$("tileInfo").textContent="("+selected.x+", "+selected.y+") · "+t.terrain+" · food "+t.food+" · "+t.citizens.length+" citizen(s)"+(t.settlement?" · settlement: "+t.settlement.name:"");
 }
@@ -121,6 +127,7 @@ function step(){
  world.citizens.forEach(c=>{c.age+=1/365;c.food-=.015;if(c.food<0)c.health=Math.max(0,c.health-.5);const t=world.tiles[c.y]?.[c.x];if(t&&t.food>0&&c.food<8){t.food--;c.food=Math.min(10,c.food+2)}});
  const dead=world.citizens.filter(c=>c.health<=0||c.age>95);if(dead.length){const gone=new Set(dead.map(c=>c.id));world.citizens=world.citizens.filter(c=>!gone.has(c.id));world.tiles.flat().forEach(t=>t.citizens=t.citizens.filter(id=>!gone.has(id)));if(dead.length===1)addEvent("A citizen passed away; the world remembers.");else addEvent(dead.length+" citizens passed away.");}
  world.settlements.forEach(s=>{const nearby=world.citizens.filter(c=>Math.hypot(c.x-s.x,c.y-s.y)<5);s.population=nearby.length;if(nearby.length>=4&&Math.random()<.04){const spots=[];for(let y=Math.max(0,s.y-4);y<Math.min(world.h,s.y+5);y++)for(let x=Math.max(0,s.x-4);x<Math.min(world.w,s.x+5);x++){const t=world.tiles[y][x];if(t.terrain!=="water"&&t.citizens.length===0&&Math.hypot(x-s.x,y-s.y)<5)spots.push({x,y,t})}if(spots.length){const p=spots[rand(spots.length)],c={id:world.nextId++,x:p.x,y:p.y,age:0,health:100,food:5,home:s.id};world.citizens.push(c);p.t.citizens.push(c.id);addEvent("A new citizen was born near "+s.name+".")}}});
+ if(window.CivilizationSystem)CivilizationSystem.step(world,days,addEvent);
  if(days%30===0)addEvent("Day "+days+": the world continues to change.");
  draw();updateUI();
 }
@@ -131,7 +138,7 @@ $("worldName").addEventListener("change",()=>{world.name=$("worldName").value.tr
 $("newBtn").addEventListener("click",()=>{if(confirm("Create a new world? Save this world first if you want to keep it.")){setRunning(false);newWorld(world.w,world.h)}});
 $("generateBtn").addEventListener("click",()=>{const [w,h]=$("worldSize").value.split("x").map(Number);setRunning(false);newWorld(w,h)});
 function save(){try{localStorage.setItem("chatgpt-worldbox-save-v1",JSON.stringify({world,days,events}));addEvent("World saved on this device.");}catch(e){alert("Could not save. Device storage may be full or blocked.")}}
-function load(){try{const raw=localStorage.getItem("chatgpt-worldbox-save-v1");if(!raw){alert("No saved world was found on this device yet.");return}const d=JSON.parse(raw);if(!d.world||!Array.isArray(d.world.tiles)||!d.world.w||!d.world.h)throw new Error("Save data is incomplete");world=d.world;days=d.days||1;events=Array.isArray(d.events)?d.events:[];setRunning(false);resizeCanvas();draw();renderHistory();updateUI();}catch(e){alert("This save could not be loaded. It may be damaged or from an incompatible version.")}}
+function load(){try{const raw=localStorage.getItem("chatgpt-worldbox-save-v1");if(!raw){alert("No saved world was found on this device yet.");return}const d=JSON.parse(raw);if(!d.world||!Array.isArray(d.world.tiles)||!d.world.w||!d.world.h)throw new Error("Save data is incomplete");world=d.world;days=d.days||1;events=Array.isArray(d.events)?d.events:[];if(window.CivilizationSystem)CivilizationSystem.ensure(world);setRunning(false);resizeCanvas();draw();renderHistory();updateUI();}catch(e){alert("This save could not be loaded. It may be damaged or from an incompatible version.")}}
 $("saveBtn").addEventListener("click",save);$("loadBtn").addEventListener("click",load);
 window.addEventListener("resize",fitCanvas);
 buildTools();newWorld();
