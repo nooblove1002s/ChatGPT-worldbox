@@ -31,7 +31,7 @@
     <div class="field"><label for="worldName">World name</label><input id="worldName" maxlength="36" value="First World"></div>
     <div class="field"><label for="brushSize">Brush size</label><input id="brushSize" type="range" min="1" max="5" value="1"><span id="brushLabel" class="small">1 tile</span></div>
     <div class="field"><label for="speed">Simulation speed</label><select id="speed"><option value="1">1× — Calm</option><option value="2">2×</option><option value="4">4×</option><option value="8">8× — Fast</option></select></div>
-    <div class="field"><label for="worldSize">New world size</label><select id="worldSize"><option value="48x30">Small (48 × 30)</option><option value="64x40" selected>Medium (64 × 40)</option><option value="84x52">Large (84 × 52)</option></select></div>
+    <div class="field"><label for="worldSize">New world size</label><select id="worldSize"><option value="96x60">Small (96 × 60)</option><option value="128x80" selected>Medium (128 × 80)</option><option value="160x100">Large (160 × 100)</option></select></div>
     <button id="generateBtn" style="width:100%">Generate terrain</button>
   </div>
   <p class="notice">Choose a tool, then tap or drag on the map. Your worlds are stored in this browser on this device.</p>
@@ -74,11 +74,30 @@ let world,selectedTool="paint:grass",running=false,days=1,tickHandle=null,select
 const $=id=>document.getElementById(id);
 function rand(n){return Math.floor(Math.random()*n)}
 function blankTile(terrain="grass"){return {terrain,food:terrain==="forest"?3:terrain==="grass"?2:0,moisture:terrain==="water"?1:Math.random(),citizens:[],settlement:null}}
-function newWorld(w=64,h=40){
+function newWorld(w=128,h=80){
  const tiles=Array.from({length:h},(_,y)=>Array.from({length:w},(_,x)=>blankTile((Math.random()<.08||x===0||y===0||x===w-1||y===h-1)?"water":"grass")));
- // Organic blobs for forests, highlands, and lakes.
- for(let i=0;i<Math.floor(w*h*.035);i++){let x=rand(w),y=rand(h),type=["forest","mountain","water","sand"][rand(4)],r=2+rand(4);
- for(let yy=Math.max(0,y-r);yy<Math.min(h,y+r);yy++)for(let xx=Math.max(0,x-r);xx<Math.min(w,x+r);xx++)if(Math.hypot(xx-x,yy-y)<r&&Math.random()>.28)tiles[yy][xx]=blankTile(type)}
+ // Organic biome patches; larger maps keep terrain features readable at world scale.
+ for(let i=0;i<Math.floor(w*h*.018);i++){let x=rand(w),y=rand(h),type=["forest","water","sand"][rand(3)],rx=3+rand(7),ry=2+rand(5);
+ for(let yy=Math.max(1,y-ry);yy<Math.min(h-1,y+ry);yy++)for(let xx=Math.max(1,x-rx);xx<Math.min(w-1,x+rx);xx++){
+   const dx=(xx-x)/rx,dy=(yy-y)/ry;
+   if(dx*dx+dy*dy<1&&Math.random()>.16)tiles[yy][xx]=blankTile(type);
+ }}
+ // Build actual mountain chains by walking a winding ridge, then filling irregular foothills.
+ const rangeCount=Math.max(5,Math.round(w/18));
+ for(let r=0;r<rangeCount;r++){
+   let x=5+rand(Math.max(1,w-10)),y=5+rand(Math.max(1,h-10));
+   const angle=Math.random()*Math.PI*2,length=Math.max(12,Math.floor(Math.min(w,h)*(.28+Math.random()*.3)));
+   let drift=(Math.random()-.5)*.7;
+   for(let k=0;k<length;k++){
+     x+=Math.cos(angle+Math.sin(k*.17+ r)*.45+drift);
+     y+=Math.sin(angle+Math.sin(k*.17+ r)*.45+drift);
+     const cx=Math.round(x),cy=Math.round(y),radius=2+Math.floor((Math.sin(k/length*Math.PI)*2)+Math.random()*2);
+     for(let yy=Math.max(1,cy-radius-2);yy<Math.min(h-1,cy+radius+3);yy++)for(let xx=Math.max(1,cx-radius-2);xx<Math.min(w-1,cx+radius+3);xx++){
+       const dist=Math.hypot((xx-cx)*(.85+Math.random()*.3),yy-cy);
+       if(dist<radius+1.8&&Math.random()>.12)tiles[yy][xx]=blankTile(dist<radius*.64?"mountain":(Math.random()<.58?"mountain":"grass"));
+     }
+   }
+ }
  world={name:$("worldName").value.trim()||"Untitled World",w,h,tiles,citizens:[],settlements:[],kingdoms:[],nextId:1};
  if(window.CivilizationSystem)CivilizationSystem.ensure(world);
  days=1;events=[];addEvent("Year 1: A new world begins. Shape the land and introduce life.");selected={x:Math.floor(w/2),y:Math.floor(h/2)};resizeCanvas();draw();updateUI();
@@ -109,10 +128,24 @@ function draw(){
      ctx.fillStyle="#4a9b50";ctx.beginPath();ctx.moveTo(px+12,py+7);ctx.lineTo(px+7,py+16);ctx.lineTo(px+17,py+16);ctx.fill();
      ctx.fillStyle="#78bf63";ctx.fillRect(px+10,py+8,2,3);
    } else if(t.terrain==="mountain"){
-     ctx.fillStyle="#65543e";ctx.beginPath();ctx.moveTo(px+1,py+22);ctx.lineTo(px+9,py+7);ctx.lineTo(px+14,py+14);ctx.lineTo(px+19,py+3);ctx.lineTo(px+24,py+22);ctx.fill();
-     ctx.fillStyle="#bca27b";ctx.beginPath();ctx.moveTo(px+1,py+22);ctx.lineTo(px+9,py+7);ctx.lineTo(px+12,py+15);ctx.lineTo(px+7,py+13);ctx.fill();
-     ctx.fillStyle="#e5d7b5";ctx.beginPath();ctx.moveTo(px+19,py+3);ctx.lineTo(px+14,py+14);ctx.lineTo(px+18,py+12);ctx.lineTo(px+20,py+16);ctx.lineTo(px+24,py+22);ctx.fill();
-     ctx.fillStyle="#8c795b";ctx.fillRect(px+4,py+20,16,2);
+     // Layered pixel-art mountain mass: shaded rock faces, broken ledges, scree, and snow.
+     const up=world.tiles[y-1]?.[x]?.terrain==="mountain",right=world.tiles[y]?.[x+1]?.terrain==="mountain";
+     const down=world.tiles[y+1]?.[x]?.terrain==="mountain",left=world.tiles[y]?.[x-1]?.terrain==="mountain";
+     const neighbors=[up,right,down,left].filter(Boolean).length;
+     ctx.fillStyle="#756b60";ctx.fillRect(px,py,s,s);
+     ctx.fillStyle="#887d6e";ctx.fillRect(px+1,py+Math.floor(s*.52),s-2,Math.floor(s*.46));
+     // Broken ridge silhouette changes per cell so a range does not repeat identical peaks.
+     const peakX=px+Math.floor(s*(.28+(seed%37)/100)),peakY=py+Math.floor(s*(.08+(seed%5)*.018));
+     const peak2X=px+Math.floor(s*(.64+(seed%19)/100)),peak2Y=py+Math.floor(s*(.23+(seed%4)*.025));
+     ctx.fillStyle="#c0b3a0";ctx.beginPath();ctx.moveTo(px-2,py+s*.88);ctx.lineTo(peakX,peakY);ctx.lineTo(px+s*.43,py+s*.48);ctx.lineTo(peak2X,peak2Y);ctx.lineTo(px+s+2,py+s*.82);ctx.lineTo(px+s+2,py+s+2);ctx.lineTo(px-2,py+s+2);ctx.closePath();ctx.fill();
+     ctx.fillStyle="#a09381";ctx.beginPath();ctx.moveTo(peakX,peakY);ctx.lineTo(px+s*.43,py+s*.48);ctx.lineTo(px+s*.34,py+s*.75);ctx.lineTo(px+s*.18,py+s*.66);ctx.closePath();ctx.fill();
+     ctx.fillStyle="#5a554f";ctx.beginPath();ctx.moveTo(px+s*.43,py+s*.48);ctx.lineTo(peak2X,peak2Y);ctx.lineTo(px+s+2,py+s*.82);ctx.lineTo(px+s*.72,py+s*.7);ctx.lineTo(px+s*.61,py+s*.82);ctx.closePath();ctx.fill();
+     ctx.fillStyle="#dedbd0";ctx.beginPath();ctx.moveTo(peakX,peakY);ctx.lineTo(px+s*.22,py+s*.38);ctx.lineTo(px+s*.31,py+s*.42);ctx.lineTo(px+s*.39,py+s*.35);ctx.lineTo(px+s*.43,py+s*.48);ctx.closePath();ctx.fill();
+     if(seed%3!==0){ctx.fillStyle="#f0eee3";ctx.beginPath();ctx.moveTo(peak2X,peak2Y);ctx.lineTo(px+s*.57,py+s*.39);ctx.lineTo(px+s*.66,py+s*.42);ctx.lineTo(px+s*.73,py+s*.52);ctx.lineTo(px+s*.62,py+s*.5);ctx.closePath();ctx.fill()}
+     ctx.fillStyle="#494741";ctx.fillRect(px+s*.17,py+s*.72,Math.max(2,s*.08),Math.max(2,s*.05));
+     ctx.fillRect(px+s*.54,py+s*.79,Math.max(2,s*.12),Math.max(2,s*.04));
+     ctx.fillStyle="#b0a18a";ctx.fillRect(px+s*.08,py+s*.9,s*.28,Math.max(1,s*.035));
+     if(neighbors<2){ctx.fillStyle="#6d6254";ctx.fillRect(px+s*.02,py+s*.94,s*.96,Math.max(1,s*.06))}
    } else if(t.terrain==="water"){
      ctx.fillStyle="#4aa6c0";ctx.fillRect(px+3,py+5+(seed%11),7,2);ctx.fillRect(px+13,py+17,5,2);
      ctx.fillStyle="#83d3df";ctx.fillRect(px+4,py+5+(seed%11),3,1);ctx.fillRect(px+14,py+17,2,1);
