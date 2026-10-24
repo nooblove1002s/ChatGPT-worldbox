@@ -7,7 +7,7 @@
 <title>ChatGPT-WorldBox — World Sandbox</title>
 <style>
 :root{color-scheme:dark;--bg:#101b19;--panel:#192723;--panel2:#22352e;--line:#3b5448;--text:#f0f5e9;--muted:#a9b9ac;--gold:#f1c86b;--green:#86d99b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit;background:#2b4137;border:1px solid var(--line);border-radius:9px;padding:9px 11px}button:hover{filter:brightness(1.14)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}.app{min-height:100vh;display:grid;grid-template-rows:auto 1fr}.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:#14211df2;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.logo{font-size:19px;font-weight:900;letter-spacing:.02em}.logo span{color:var(--gold)}.tag{color:var(--muted);font-size:12px}.top-actions{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}.layout{display:grid;grid-template-columns:220px minmax(0,1fr) 250px;gap:10px;padding:10px;min-height:0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px;min-width:0}.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 10px}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.tool{display:flex;align-items:center;gap:7px;text-align:left;min-height:43px}.tool.active{border-color:var(--gold);background:#554a2c}.swatch{width:15px;height:15px;border-radius:4px;flex:none;border:1px solid #ffffff44}.section{margin-top:18px}.small{font-size:12px;color:var(--muted)}.field{display:grid;gap:5px;margin:10px 0}.field label{color:var(--muted);font-size:12px}.field input,.field select{width:100%;min-width:0;background:#101a17;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px}.map-wrap{min-width:0;display:flex;flex-direction:column;gap:8px}.map-head{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.map-stage{position:relative;flex:1;min-height:400px;border:1px solid var(--line);border-radius:13px;background:#0b1512;overflow:auto;display:block;overscroll-behavior:contain}canvas{display:block;max-width:none;max-height:none;image-rendering:pixelated;touch-action:pan-x pan-y}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}.legend span{display:flex;align-items:center;gap:5px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{padding:9px;background:#101a17;border:1px solid var(--line);border-radius:9px}.stat strong{display:block;font-size:19px}.stat span{font-size:11px;color:var(--muted)}.event-log{display:flex;flex-direction:column;gap:8px;max-height:270px;overflow:auto}.event{padding:8px;border-left:2px solid var(--gold);background:#101a17;border-radius:0 7px 7px 0;font-size:12px}.notice{color:var(--muted);font-size:12px;margin:10px 0 0}.primary{background:#66552c;border-color:#aa8b43}.danger{background:#482c2b}.pill{border-radius:999px;padding:5px 9px;background:#101a17;border:1px solid var(--line);font-size:12px}.mobile-tabs{display:none}.footer{padding:0 12px 12px;color:var(--muted);font-size:11px;text-align:center}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit;background:#2b4137;border:1px solid var(--line);border-radius:9px;padding:9px 11px}button:hover{filter:brightness(1.14)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}.app{min-height:100vh;display:grid;grid-template-rows:auto 1fr}.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:#14211df2;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.logo{font-size:19px;font-weight:900;letter-spacing:.02em}.logo span{color:var(--gold)}.tag{color:var(--muted);font-size:12px}.top-actions{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}.layout{display:grid;grid-template-columns:220px minmax(0,1fr) 250px;gap:10px;padding:10px;min-height:0;align-items:start}.panel{background:linear-gradient(155deg,#1d3029,#14211d 72%);border:1px solid #466455;border-radius:14px;padding:12px;min-width:0;box-shadow:0 8px 24px #0003}.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 10px}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.tool{display:flex;align-items:center;gap:7px;text-align:left;min-height:43px}.tool.active{border-color:var(--gold);background:#554a2c}.swatch{width:15px;height:15px;border-radius:4px;flex:none;border:1px solid #ffffff44}.section{margin-top:18px}.small{font-size:12px;color:var(--muted)}.field{display:grid;gap:5px;margin:10px 0}.field label{color:var(--muted);font-size:12px}.field input,.field select{width:100%;min-width:0;background:#101a17;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px}.map-wrap{min-width:0;display:flex;flex-direction:column;gap:8px}.map-head{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.map-stage{position:relative;flex:1;min-height:400px;border:1px solid #466455;border-radius:13px;background:#0b1512;overflow:auto;display:block;overscroll-behavior:contain;box-shadow:inset 0 0 0 1px #0008}canvas{display:block;max-width:none;max-height:none;image-rendering:pixelated;touch-action:pan-x pan-y}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}.legend span{display:flex;align-items:center;gap:5px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{padding:9px;background:#101a17;border:1px solid var(--line);border-radius:9px}.stat strong{display:block;font-size:19px}.stat span{font-size:11px;color:var(--muted)}.event-log{display:flex;flex-direction:column;gap:8px;max-height:270px;overflow:auto}.event{padding:8px;border-left:2px solid var(--gold);background:#101a17;border-radius:0 7px 7px 0;font-size:12px}.notice{color:var(--muted);font-size:12px;margin:10px 0 0}.primary{background:#66552c;border-color:#aa8b43}.danger{background:#482c2b}.pill{border-radius:999px;padding:5px 9px;background:#101a17;border:1px solid var(--line);font-size:12px}.mobile-tabs{display:none}.footer{padding:0 12px 12px;color:var(--muted);font-size:11px;text-align:center}
 @media(max-width:950px){.layout{grid-template-columns:190px minmax(0,1fr)}.right-panel{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}.right-panel>section{min-width:0}.event-log{max-height:160px}}
 @media(max-width:650px){.top{padding:10px}.logo{font-size:17px}.tag{display:none}.top-actions{width:100%;margin-left:0}.top-actions button{flex:1;padding:8px 6px}.layout{display:flex;flex-direction:column;padding:7px}.left-panel{order:2}.map-wrap{order:1}.right-panel{order:3;display:flex;flex-direction:column}.map-stage{min-height:45vh;max-height:58vh}.tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tool{flex-direction:column;justify-content:center;text-align:center;font-size:11px;gap:3px;min-height:54px;padding:5px}.section{margin-top:12px}.panel{padding:10px}}
 </style>
@@ -31,7 +31,7 @@
     <div class="field"><label for="worldName">World name</label><input id="worldName" maxlength="36" value="First World"></div>
     <div class="field"><label for="brushSize">Brush size</label><input id="brushSize" type="range" min="1" max="5" value="1"><span id="brushLabel" class="small">1 tile</span></div>
     <div class="field"><label for="speed">Simulation speed</label><select id="speed"><option value="1">1× — Calm</option><option value="2">2×</option><option value="4">4×</option><option value="8">8× — Fast</option></select></div>
-    <div class="field"><label for="worldSize">New world size</label><select id="worldSize"><option value="96x60">Small (96 × 60)</option><option value="128x80" selected>Medium (128 × 80)</option><option value="160x100">Large (160 × 100)</option></select></div>
+    <div class="field"><label for="worldSize">New world size</label><select id="worldSize"><option value="160x100">Small (160 × 100 · 16,000 tiles)</option><option value="224x144">Medium (224 × 144 · 32,256 tiles)</option><option value="288x180" selected>Large (288 × 180 · 51,840 tiles)</option><option value="352x220">Huge (352 × 220 · 77,440 tiles)</option></select></div>
     <button id="generateBtn" style="width:100%">Generate terrain</button>
   </div>
   <p class="notice">Choose a tool, then tap or drag on the map. Your worlds are stored in this browser on this device.</p>
@@ -70,11 +70,11 @@ const TERRAINS=[
 ];
 const TOOL_LIST=[...TERRAINS.map(t=>({id:"paint:"+t.id,label:t.label,icon:t.icon,color:t.color})),
  {id:"citizen",label:"Citizen",icon:"●",color:"#ffe6a1"},{id:"settlement",label:"Settlement",icon:"◆",color:"#f1c86b"},{id:"erase",label:"Erase life",icon:"✕",color:"#b65e55"},{id:"inspect",label:"Inspect",icon:"⌕",color:"#d5ded8"}];
-let world,selectedTool="paint:grass",running=false,days=1,tickHandle=null,selected={x:0,y:0},lastStamp="",events=[],tileSize=24;
+let world,selectedTool="paint:grass",running=false,days=1,tickHandle=null,selected={x:0,y:0},lastStamp="",events=[],tileSize=12;
 const $=id=>document.getElementById(id);
 function rand(n){return Math.floor(Math.random()*n)}
 function blankTile(terrain="grass"){return {terrain,food:terrain==="forest"?3:terrain==="grass"?2:0,moisture:terrain==="water"?1:Math.random(),citizens:[],settlement:null}}
-function newWorld(w=128,h=80){
+function newWorld(w=288,h=180){
  const tiles=Array.from({length:h},(_,y)=>Array.from({length:w},(_,x)=>blankTile((Math.random()<.08||x===0||y===0||x===w-1||y===h-1)?"water":"grass")));
  // Organic biome patches; larger maps keep terrain features readable at world scale.
  for(let i=0;i<Math.floor(w*h*.018);i++){let x=rand(w),y=rand(h),type=["forest","water","sand"][rand(3)],rx=3+rand(7),ry=2+rand(5);
@@ -82,6 +82,26 @@ function newWorld(w=128,h=80){
    const dx=(xx-x)/rx,dy=(yy-y)/ry;
    if(dx*dx+dy*dy<1&&Math.random()>.16)tiles[yy][xx]=blankTile(type);
  }}
+ // Carve winding river systems with bends and occasional branches. Water is painted
+ // as connected paths rather than isolated dots, then softened with sand banks.
+ const riverCount=Math.max(3,Math.round(w/90));
+ for(let r=0;r<riverCount;r++){
+   let x=8+rand(Math.max(1,w-16)),y=8+rand(Math.max(1,h-16));
+   let dx=(Math.random()-.5)*.7,dy=(Math.random()-.5)*.7;
+   const steps=Math.floor(Math.min(w,h)*(.65+Math.random()*.65));
+   for(let k=0;k<steps;k++){
+     dx=dx*.82+(Math.random()-.5)*.65;dy=dy*.82+(Math.random()-.5)*.65;
+     const cx=Math.round(x),cy=Math.round(y),width=Math.random()<.08?2:1;
+     for(let yy=Math.max(1,cy-width);yy<=Math.min(h-2,cy+width);yy++)for(let xx=Math.max(1,cx-width);xx<=Math.min(w-2,cx+width);xx++){
+       if(Math.hypot(xx-cx,yy-cy)<=width+.25){
+         if(Math.random()<.22&&width===1)tiles[yy][xx]=blankTile("sand");
+         else tiles[yy][xx]=blankTile("water");
+       }
+     }
+     x+=dx;y+=dy;
+     if(x<3||y<3||x>w-4||y>h-4)break;
+   }
+ }
  // Build actual mountain chains by walking a winding ridge, then filling irregular foothills.
  const rangeCount=Math.max(5,Math.round(w/18));
  for(let r=0;r<rangeCount;r++){
@@ -104,12 +124,15 @@ function newWorld(w=128,h=80){
 }
 function addEvent(text){events.unshift({day:days,text});events=events.slice(0,80);renderHistory()}
 function renderHistory(){const root=$("history");root.innerHTML="";events.forEach(e=>{const d=document.createElement("div");d.className="event";d.textContent=e.text;root.appendChild(d)})}
-function fitCanvas(){canvas.style.width=canvas.width+"px";canvas.style.height=canvas.height+"px";$("zoomLabel").textContent=Math.round(tileSize/24*100)+"%"}
+function fitCanvas(){canvas.style.width=canvas.width+"px";canvas.style.height=canvas.height+"px";$("zoomLabel").textContent=Math.round(tileSize/12*100)+"%"}
 function resizeCanvas(){canvas.width=world.w*tileSize;canvas.height=world.h*tileSize;fitCanvas()}
 function draw(){
  if(!world)return;
- const s=tileSize;
- ctx.clearRect(0,0,canvas.width,canvas.height);
+ const s=24;
+ // Draw detailed 24-unit pixel-art tiles into a smaller backing canvas. This keeps
+ // large maps crisp while limiting GPU memory on tablets and phones.
+ ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);
+ const scale=tileSize/24;ctx.setTransform(scale,0,0,scale,0,0);
  // Paint each tile with layered, readable terrain instead of flat colored squares.
  for(let y=0;y<world.h;y++)for(let x=0;x<world.w;x++){
    const t=world.tiles[y][x],px=x*s,py=y*s;
@@ -221,11 +244,11 @@ function step(){
 }
 function setRunning(v){running=v;$("playBtn").textContent=running?"⏸ Pause":"▶ Play";$("status").textContent=running?"Simulating":"Paused";if(tickHandle)clearInterval(tickHandle);tickHandle=null;if(running)tickHandle=setInterval(()=>{for(let i=0;i<Number($("speed").value);i++)step()},1000)}
 $("playBtn").addEventListener("click",()=>setRunning(!running));$("stepBtn").addEventListener("click",()=>{if(!running)step()});$("speed").addEventListener("change",()=>{if(running)setRunning(true)});
- function setZoom(next){tileSize=Math.max(16,Math.min(48,next));if(world){resizeCanvas();draw()}}
- $("zoomInBtn").addEventListener("click",()=>setZoom(tileSize+4));$("zoomOutBtn").addEventListener("click",()=>setZoom(tileSize-4));
+ function setZoom(next){tileSize=Math.max(8,Math.min(24,next));if(world){resizeCanvas();draw()}}
+ $("zoomInBtn").addEventListener("click",()=>setZoom(tileSize+2));$("zoomOutBtn").addEventListener("click",()=>setZoom(tileSize-2));
 $("brushSize").addEventListener("input",()=>{$("brushLabel").textContent=$("brushSize").value+" tile"+(Number($("brushSize").value)>1?"s":"")});
 $("worldName").addEventListener("change",()=>{world.name=$("worldName").value.trim()||"Untitled World";updateUI()});
-$("newBtn").addEventListener("click",()=>{if(confirm("Create a new world? Save this world first if you want to keep it.")){setRunning(false);newWorld(world.w,world.h)}});
+$("newBtn").addEventListener("click",()=>{if(confirm("Create a new world? Save this world first if you want to keep it.")){setRunning(false);const [w,h]=$("worldSize").value.split("x").map(Number);newWorld(w,h)}});
 $("generateBtn").addEventListener("click",()=>{const [w,h]=$("worldSize").value.split("x").map(Number);setRunning(false);newWorld(w,h)});
 function save(){try{localStorage.setItem("chatgpt-worldbox-save-v1",JSON.stringify({world,days,events}));addEvent("World saved on this device.");}catch(e){alert("Could not save. Device storage may be full or blocked.")}}
 function load(){try{const raw=localStorage.getItem("chatgpt-worldbox-save-v1");if(!raw){alert("No saved world was found on this device yet.");return}const d=JSON.parse(raw);if(!d.world||!Array.isArray(d.world.tiles)||!d.world.w||!d.world.h)throw new Error("Save data is incomplete");world=d.world;days=d.days||1;events=Array.isArray(d.events)?d.events:[];if(window.CivilizationSystem)CivilizationSystem.ensure(world);setRunning(false);resizeCanvas();draw();renderHistory();updateUI();}catch(e){alert("This save could not be loaded. It may be damaged or from an incompatible version.")}}
