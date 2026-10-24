@@ -7,7 +7,7 @@
 <title>ChatGPT-WorldBox — World Sandbox</title>
 <style>
 :root{color-scheme:dark;--bg:#101b19;--panel:#192723;--panel2:#22352e;--line:#3b5448;--text:#f0f5e9;--muted:#a9b9ac;--gold:#f1c86b;--green:#86d99b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit;background:#2b4137;border:1px solid var(--line);border-radius:9px;padding:9px 11px}button:hover{filter:brightness(1.14)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}.app{min-height:100vh;display:grid;grid-template-rows:auto 1fr}.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:#14211d;border-bottom:1px solid var(--line)}.logo{font-size:19px;font-weight:900;letter-spacing:.02em}.logo span{color:var(--gold)}.tag{color:var(--muted);font-size:12px}.top-actions{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}.layout{display:grid;grid-template-columns:220px minmax(0,1fr) 250px;gap:10px;padding:10px;min-height:0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px;min-width:0}.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 10px}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.tool{display:flex;align-items:center;gap:7px;text-align:left;min-height:43px}.tool.active{border-color:var(--gold);background:#554a2c}.swatch{width:15px;height:15px;border-radius:4px;flex:none;border:1px solid #ffffff44}.section{margin-top:18px}.small{font-size:12px;color:var(--muted)}.field{display:grid;gap:5px;margin:10px 0}.field label{color:var(--muted);font-size:12px}.field input,.field select{width:100%;min-width:0;background:#101a17;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px}.map-wrap{min-width:0;display:flex;flex-direction:column;gap:8px}.map-head{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.map-stage{position:relative;flex:1;min-height:400px;border:1px solid var(--line);border-radius:13px;background:#0b1512;overflow:hidden;display:grid;place-items:center}canvas{display:block;max-width:100%;max-height:100%;image-rendering:pixelated;touch-action:none}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}.legend span{display:flex;align-items:center;gap:5px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{padding:9px;background:#101a17;border:1px solid var(--line);border-radius:9px}.stat strong{display:block;font-size:19px}.stat span{font-size:11px;color:var(--muted)}.event-log{display:flex;flex-direction:column;gap:8px;max-height:270px;overflow:auto}.event{padding:8px;border-left:2px solid var(--gold);background:#101a17;border-radius:0 7px 7px 0;font-size:12px}.notice{color:var(--muted);font-size:12px;margin:10px 0 0}.primary{background:#66552c;border-color:#aa8b43}.danger{background:#482c2b}.pill{border-radius:999px;padding:5px 9px;background:#101a17;border:1px solid var(--line);font-size:12px}.mobile-tabs{display:none}.footer{padding:0 12px 12px;color:var(--muted);font-size:11px;text-align:center}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer;color:inherit;background:#2b4137;border:1px solid var(--line);border-radius:9px;padding:9px 11px}button:hover{filter:brightness(1.14)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}.app{min-height:100vh;display:grid;grid-template-rows:auto 1fr}.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;background:#14211d;border-bottom:1px solid var(--line)}.logo{font-size:19px;font-weight:900;letter-spacing:.02em}.logo span{color:var(--gold)}.tag{color:var(--muted);font-size:12px}.top-actions{display:flex;gap:7px;flex-wrap:wrap;margin-left:auto}.layout{display:grid;grid-template-columns:220px minmax(0,1fr) 250px;gap:10px;padding:10px;min-height:0}.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:12px;min-width:0}.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:0 0 10px}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.tool{display:flex;align-items:center;gap:7px;text-align:left;min-height:43px}.tool.active{border-color:var(--gold);background:#554a2c}.swatch{width:15px;height:15px;border-radius:4px;flex:none;border:1px solid #ffffff44}.section{margin-top:18px}.small{font-size:12px;color:var(--muted)}.field{display:grid;gap:5px;margin:10px 0}.field label{color:var(--muted);font-size:12px}.field input,.field select{width:100%;min-width:0;background:#101a17;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px}.map-wrap{min-width:0;display:flex;flex-direction:column;gap:8px}.map-head{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}.map-stage{position:relative;flex:1;min-height:400px;border:1px solid var(--line);border-radius:13px;background:#0b1512;overflow:hidden;display:grid;place-items:center}canvas{display:block;max-width:100%;max-height:100%;image-rendering:auto;touch-action:none}.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}.legend span{display:flex;align-items:center;gap:5px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{padding:9px;background:#101a17;border:1px solid var(--line);border-radius:9px}.stat strong{display:block;font-size:19px}.stat span{font-size:11px;color:var(--muted)}.event-log{display:flex;flex-direction:column;gap:8px;max-height:270px;overflow:auto}.event{padding:8px;border-left:2px solid var(--gold);background:#101a17;border-radius:0 7px 7px 0;font-size:12px}.notice{color:var(--muted);font-size:12px;margin:10px 0 0}.primary{background:#66552c;border-color:#aa8b43}.danger{background:#482c2b}.pill{border-radius:999px;padding:5px 9px;background:#101a17;border:1px solid var(--line);font-size:12px}.mobile-tabs{display:none}.footer{padding:0 12px 12px;color:var(--muted);font-size:11px;text-align:center}
 @media(max-width:950px){.layout{grid-template-columns:190px minmax(0,1fr)}.right-panel{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px}.right-panel>section{min-width:0}.event-log{max-height:160px}}
 @media(max-width:650px){.top{padding:10px}.logo{font-size:17px}.tag{display:none}.top-actions{width:100%;margin-left:0}.top-actions button{flex:1;padding:8px 6px}.layout{display:flex;flex-direction:column;padding:7px}.left-panel{order:2}.map-wrap{order:1}.right-panel{order:3;display:flex;flex-direction:column}.map-stage{min-height:45vh;max-height:58vh}.tool-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.tool{flex-direction:column;justify-content:center;text-align:center;font-size:11px;gap:3px;min-height:54px;padding:5px}.section{margin-top:12px}.panel{padding:10px}}
 </style>
@@ -86,18 +86,73 @@ function newWorld(w=64,h=40){
 function addEvent(text){events.unshift({day:days,text});events=events.slice(0,80);renderHistory()}
 function renderHistory(){const root=$("history");root.innerHTML="";events.forEach(e=>{const d=document.createElement("div");d.className="event";d.textContent=e.text;root.appendChild(d)})}
 function fitCanvas(){const stage=canvas.parentElement;const maxW=Math.max(260,stage.clientWidth-16),maxH=Math.max(260,stage.clientHeight-16),ratio=world.w/world.h;let w=maxW,h=w/ratio;if(h>maxH){h=maxH;w=h*ratio}canvas.style.width=Math.floor(w)+"px";canvas.style.height=Math.floor(h)+"px"}
-function resizeCanvas(){canvas.width=world.w*16;canvas.height=world.h*16;fitCanvas()}
+function resizeCanvas(){canvas.width=world.w*24;canvas.height=world.h*24;fitCanvas()}
 function draw(){
- if(!world)return;const s=16;ctx.clearRect(0,0,canvas.width,canvas.height);
- for(let y=0;y<world.h;y++)for(let x=0;x<world.w;x++){const t=world.tiles[y][x];ctx.fillStyle=COLORS[t.terrain]||COLORS.grass;ctx.fillRect(x*s,y*s,s,s);
-   if(t.terrain==="forest"){ctx.fillStyle="#174d36";ctx.fillRect(x*s+4,y*s+3,8,10);ctx.fillStyle="#397b48";ctx.fillRect(x*s+2,y*s+6,12,5)}
-   if(t.terrain==="mountain"){ctx.fillStyle="#c0a67b";ctx.beginPath();ctx.moveTo(x*s+2,y*s+14);ctx.lineTo(x*s+8,y*s+2);ctx.lineTo(x*s+14,y*s+14);ctx.fill()}
-   if(t.terrain==="water"&&((x+y)%3===0)){ctx.fillStyle="#63b9cc";ctx.fillRect(x*s+3,y*s+8,6,1)}
-   if(t.settlement){ctx.fillStyle="#e8c36a";ctx.fillRect(x*s+4,y*s+4,8,8);ctx.fillStyle="#8d4d37";ctx.fillRect(x*s+3,y*s+3,10,3)}
-   if(t.citizens.length){ctx.fillStyle="#ffedb0";ctx.beginPath();ctx.arc(x*s+8,y*s+8,Math.min(6,2+t.citizens.length),0,Math.PI*2);ctx.fill();ctx.fillStyle="#35442f";ctx.fillRect(x*s+6,y*s+7,2,2)}
+ if(!world)return;
+ const s=24;
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ // Paint each tile with layered, readable terrain instead of flat colored squares.
+ for(let y=0;y<world.h;y++)for(let x=0;x<world.w;x++){
+   const t=world.tiles[y][x],px=x*s,py=y*s;
+   ctx.fillStyle=COLORS[t.terrain]||COLORS.grass;ctx.fillRect(px,py,s,s);
+   const seed=(x*73+y*131+x*y*17)%97;
+   if(t.terrain==="grass"){
+     ctx.fillStyle=seed%3===0?"#73c765":"#3d984e";
+     ctx.fillRect(px+3+(seed%12),py+4+((seed*3)%13),2,2);
+     ctx.fillStyle="#a0d978";ctx.fillRect(px+5+(seed%8),py+15,2,2);
+     if(seed%9===0){ctx.fillStyle="#f5e7a1";ctx.fillRect(px+16,py+5,3,3);ctx.fillStyle="#ef9cb0";ctx.fillRect(px+18,py+7,2,2)}
+   } else if(t.terrain==="forest"){
+     // Three layered evergreen crowns and a visible trunk.
+     ctx.fillStyle="#174b35";ctx.fillRect(px+9,py+12,7,9);
+     ctx.fillStyle="#174b35";ctx.beginPath();ctx.moveTo(px+12,py+1);ctx.lineTo(px+3,py+14);ctx.lineTo(px+21,py+14);ctx.fill();
+     ctx.fillStyle="#2c7544";ctx.beginPath();ctx.moveTo(px+12,py+4);ctx.lineTo(px+5,py+16);ctx.lineTo(px+19,py+16);ctx.fill();
+     ctx.fillStyle="#4a9b50";ctx.beginPath();ctx.moveTo(px+12,py+7);ctx.lineTo(px+7,py+16);ctx.lineTo(px+17,py+16);ctx.fill();
+     ctx.fillStyle="#78bf63";ctx.fillRect(px+10,py+8,2,3);
+   } else if(t.terrain==="mountain"){
+     ctx.fillStyle="#65543e";ctx.beginPath();ctx.moveTo(px+1,py+22);ctx.lineTo(px+9,py+7);ctx.lineTo(px+14,py+14);ctx.lineTo(px+19,py+3);ctx.lineTo(px+24,py+22);ctx.fill();
+     ctx.fillStyle="#bca27b";ctx.beginPath();ctx.moveTo(px+1,py+22);ctx.lineTo(px+9,py+7);ctx.lineTo(px+12,py+15);ctx.lineTo(px+7,py+13);ctx.fill();
+     ctx.fillStyle="#e5d7b5";ctx.beginPath();ctx.moveTo(px+19,py+3);ctx.lineTo(px+14,py+14);ctx.lineTo(px+18,py+12);ctx.lineTo(px+20,py+16);ctx.lineTo(px+24,py+22);ctx.fill();
+     ctx.fillStyle="#8c795b";ctx.fillRect(px+4,py+20,16,2);
+   } else if(t.terrain==="water"){
+     ctx.fillStyle="#4aa6c0";ctx.fillRect(px+3,py+5+(seed%11),7,2);ctx.fillRect(px+13,py+17,5,2);
+     ctx.fillStyle="#83d3df";ctx.fillRect(px+4,py+5+(seed%11),3,1);ctx.fillRect(px+14,py+17,2,1);
+     if(t.moisture>0.8){ctx.fillStyle="#1e668e";ctx.fillRect(px+18,py+3,3,3)}
+   } else if(t.terrain==="sand"){
+     ctx.fillStyle="#e6d18a";ctx.fillRect(px+4,py+6,2,2);ctx.fillRect(px+16,py+16,2,2);ctx.fillRect(px+10,py+20,1,1);
+     ctx.fillStyle="#b39a57";ctx.fillRect(px+2,py+13,5,1);
+   } else if(t.terrain==="snow"){
+     ctx.fillStyle="#f5fbff";ctx.fillRect(px+3,py+5,7,3);ctx.fillRect(px+14,py+15,6,2);
+     ctx.fillStyle="#9fb8c4";ctx.fillRect(px+7,py+19,9,2);
+   }
+   // Small shoreline highlight makes land/water boundaries easier to read.
+   if(t.terrain!=="water"){
+     const nearWater=[[x,y-1],[x+1,y],[x,y+1],[x-1,y]].some(([nx,ny])=>world.tiles[ny]?.[nx]?.terrain==="water");
+     if(nearWater){ctx.fillStyle="#e3d59a";ctx.fillRect(px,py,s,2)}
+   }
+   if(t.settlement){
+     // A tiny village has a plaza, several buildings, roofs, and a path.
+     ctx.fillStyle="#b59a65";ctx.fillRect(px+2,py+17,20,4);
+     ctx.fillStyle="#ead6a2";ctx.fillRect(px+3,py+7,8,9);ctx.fillRect(px+14,py+10,7,7);
+     ctx.fillStyle="#8c4935";ctx.beginPath();ctx.moveTo(px+2,py+8);ctx.lineTo(px+7,py+3);ctx.lineTo(px+12,py+8);ctx.fill();
+     ctx.beginPath();ctx.moveTo(px+13,py+11);ctx.lineTo(px+17,py+7);ctx.lineTo(px+22,py+11);ctx.fill();
+     ctx.fillStyle="#5b3928";ctx.fillRect(px+6,py+12,3,4);ctx.fillRect(px+16,py+13,2,4);
+     ctx.fillStyle="#fff0bd";ctx.fillRect(px+4,py+9,2,2);ctx.fillRect(px+17,py+11,2,2);
+   }
+   if(t.citizens.length){
+     // Clear head/body silhouettes remain recognizable at ordinary zoom.
+     const count=Math.min(t.citizens.length,3);
+     for(let i=0;i<count;i++){
+       const cx=px+7+i*5,cy=py+12-(i%2)*3;
+       ctx.fillStyle="#3d3027";ctx.fillRect(cx-2,cy-5,5,5);
+       ctx.fillStyle=i%2?"#b96f48":"#e6ad7b";ctx.fillRect(cx-2,cy-4,4,4);
+       ctx.fillStyle=i%2?"#4478a0":"#e4d6b4";ctx.fillRect(cx-3,cy,6,6);
+       ctx.fillStyle="#332b27";ctx.fillRect(cx-3,cy+5,2,3);ctx.fillRect(cx+1,cy+5,2,3);
+     }
+   }
  }
- ctx.strokeStyle="#ffffff15";ctx.lineWidth=.5;for(let x=0;x<=world.w;x++){ctx.beginPath();ctx.moveTo(x*s,0);ctx.lineTo(x*s,canvas.height);ctx.stroke()}for(let y=0;y<=world.h;y++){ctx.beginPath();ctx.moveTo(0,y*s);ctx.lineTo(canvas.width,y*s);ctx.stroke()}
- ctx.strokeStyle="#ffe08a";ctx.lineWidth=2;ctx.strokeRect(selected.x*s+1,selected.y*s+1,s-2,s-2);
+ // Selection outline only; remove the dense grid that made the world look noisy.
+ ctx.strokeStyle="#fff0a0";ctx.lineWidth=2;
+ ctx.strokeRect(selected.x*s+2,selected.y*s+2,s-4,s-4);
 }
 function updateUI(){
  $("mapName").textContent=world.name;$("worldName").value=world.name;$("worldAge").textContent="Year "+(Math.floor((days-1)/365)+1)+" · Day "+(((days-1)%365)+1);$("status").textContent=running?"Simulating":"Paused";
