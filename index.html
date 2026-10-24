@@ -37,7 +37,7 @@
   <p class="notice">Choose a tool, then tap or drag on the map. Your worlds are stored in this browser on this device.</p>
 </aside>
 <section class="map-wrap">
-  <div class="map-head"><div><strong id="mapName">First World</strong> <span id="worldAge" class="pill">Year 1 · Day 1</span></div><div style="display:flex;gap:6px;align-items:center"><button id="zoomOutBtn" aria-label="Zoom out">−</button><span id="zoomLabel" class="pill">100%</span><button id="zoomInBtn" aria-label="Zoom in">+</button><span id="status" class="pill">Paused</span></div></div>
+  <div class="map-head"><div><strong id="mapName">First World</strong> <span id="worldAge" class="pill">Year 1 · Day 1</span></div><div style="display:flex;gap:6px;align-items:center"><button id="zoomOutBtn" aria-label="Zoom out">−</button><span id="zoomLabel" class="pill">100%</span><button id="zoomInBtn" aria-label="Zoom in">+</button><span id="tileCount" class="pill">51,840 tiles</span><span id="status" class="pill">Paused</span></div></div>
   <div class="map-stage"><canvas id="world" width="768" height="480" aria-label="Interactive pixel world map"></canvas></div>
   <div class="legend"><span><i class="swatch" style="background:#4caa58"></i>Grass</span><span><i class="swatch" style="background:#2679a5"></i>Water</span><span><i class="swatch" style="background:#8c7449"></i>Mountain</span><span>● Citizens</span><span>◆ Settlement</span></div>
 </section>
@@ -136,8 +136,20 @@ function draw(){
  // Paint each tile with layered, readable terrain instead of flat colored squares.
  for(let y=0;y<world.h;y++)for(let x=0;x<world.w;x++){
    const t=world.tiles[y][x],px=x*s,py=y*s;
-   ctx.fillStyle=COLORS[t.terrain]||COLORS.grass;ctx.fillRect(px,py,s,s);
    const seed=(x*73+y*131+x*y*17)%97;
+   ctx.fillStyle=COLORS[t.terrain]||COLORS.grass;ctx.fillRect(px,py,s,s);
+   // Fine-grain terrain pigment: stable per-cell flecks create a dense pixel texture
+   // without introducing a visible tile grid or regenerating noise every frame.
+   const textureColors={
+     grass:["#3d984e","#62b85a","#79c766"],forest:["#174b35","#2b7545","#3d8b4b"],
+     water:["#1c7098","#328db0","#59b5c7"],sand:["#b39a57","#e6d18a","#d1bd78"],
+     mountain:["#5a554f","#a09381","#c0b3a0"],snow:["#9fb8c4","#e5edf0","#ffffff"]
+   }[t.terrain]||["#3d984e","#62b85a","#79c766"];
+   for(let p=0;p<4;p++){
+     const n=(seed*(p+3)+p*29+11)%97;
+     ctx.fillStyle=textureColors[(n+p)%textureColors.length];
+     ctx.fillRect(px+2+(n%19),py+2+((n*7)%19),1+(p%2),1);
+   }
    if(t.terrain==="grass"){
      ctx.fillStyle=seed%3===0?"#73c765":"#3d984e";
      ctx.fillRect(px+3+(seed%12),py+4+((seed*3)%13),2,2);
@@ -212,7 +224,7 @@ function draw(){
 }
 function updateUI(){
  $("mapName").textContent=world.name;$("worldName").value=world.name;$("worldAge").textContent="Year "+(Math.floor((days-1)/365)+1)+" · Day "+(((days-1)%365)+1);$("status").textContent=running?"Simulating":"Paused";
- $("citizenCount").textContent=world.citizens.length;$("settlementCount").textContent=world.settlements.length;$("dayCount").textContent=days.toLocaleString();
+ $("citizenCount").textContent=world.citizens.length;$("settlementCount").textContent=world.settlements.length;$("dayCount").textContent=days.toLocaleString();$("tileCount").textContent=(world.w*world.h).toLocaleString()+" tiles";
  if(window.CivilizationSystem){const cs=CivilizationSystem.summarize(world);$("kingdomCount").textContent=cs.kingdoms;$("advancedCount").textContent=cs.advanced;const leaders=world.settlements.slice().sort((a,b)=>(b.technology||0)-(a.technology||0)).slice(0,3);$("civilizationInfo").textContent=leaders.length?leaders.map(s=>s.name+": "+(s.era||"Nomadic")+" · "+s.government+" · knowledge "+Math.floor((s.resources&&s.resources.knowledge)||0)+" · stability "+Math.round(s.stability||0)+"%").join(" | "):"Found a settlement and introduce citizens to begin developing knowledge, resources, and government."; }
  let land=0;world.tiles.flat().forEach(t=>{if(t.terrain!=="water")land++});$("landCount").textContent=Math.round(land/(world.w*world.h)*100)+"%";
  const t=world.tiles[selected.y]?.[selected.x];if(t)$("tileInfo").textContent="("+selected.x+", "+selected.y+") · "+t.terrain+" · food "+t.food+" · "+t.citizens.length+" citizen(s)"+(t.settlement?" · settlement: "+t.settlement.name:"");
